@@ -8,7 +8,7 @@ var upload = multer({ storage: storage })
 
 var config = require('../config');
 
-var url = 'http://192.198.218.51/v1/AUTH_acme/devita/'; //config.SS_URL || 'http://ciscoopenhouse.onstaklab.local/v1/AUTH_acme/devita/';
+var url = config.SS_URL || 'http://ciscoopenhouse.onstaklab.local/v1/AUTH_acme/devita/';
 
 var myRequest = function ({ url, method, data = null }) {
 
