@@ -279,19 +279,26 @@
 
     <script>
 
+        String.prototype.replaceAll = function (search, replacement) {
+            var target = this;
+            return target.replace(new RegExp(search, 'g'), replacement);
+        };
+
         var template = `
                 <div class="col-lg-4 col-md-4">
                     <div class="single-recent-blog-post">
                         <div class="thumb">
                             <div class="embed-responsive">
-                                <img src="image/channel1.png" width="100%" height="100%" alt="">
+                                <a href="{{ videoLink }}">
+                                    <img src="/image/thumbnails/{{ videoThumbnail }}.png" width="100%" height="100%" alt="">
+                                </a>
                             </div>
                         </div>
 
                         <div class="details">
                             <div class="tags">
-                                <a href="#" class="button_hover tag_btn">Swift Stack</a>
-                                <a href="#" class="button_hover tag_btn">Onstak</a>
+                                <a href="/" class="button_hover tag_btn">Onstak</a>
+                                <a href="/" class="button_hover tag_btn">Swift Stack</a>
                             </div>
                             <a href="{{ videoLink }}">
                                 <h4 class="sec_h4">{{ videoTitle }}</h4>
@@ -307,7 +314,20 @@
             contentType: 'application/json',
             success: function (data) {
                 data.list.forEach(e => {
-                    $('#loadlist').append(template.replace('{{ videoTitle }}', e).replace('{{ videoLink }}', `/play/${e}`));
+
+                    $.ajax({
+                        method: 'GET',
+                        url: `/image/thumbnails/${e}.png`,
+                        success: function (data) {
+                            var x = template.replaceAll('{{ videoTitle }}', e).replaceAll('{{ videoLink }}', `/play/${e}`).replaceAll('{{ videoThumbnail }}', e);
+                            $('#loadlist').append(x);
+                        },
+                        error: function () {
+                            var x = template.replaceAll('{{ videoTitle }}', e).replaceAll('{{ videoLink }}', `/play/${e}`).replaceAll('{{ videoThumbnail }}', 'channel1');
+                            $('#loadlist').append(x);
+                        }
+                    });
+
                 });
 
                 $('#fx-loader').hide();
