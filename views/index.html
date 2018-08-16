@@ -317,7 +317,7 @@
 
                     $.ajax({
                         method: 'GET',
-                        url: `/image/thumbnails/${e}.png`,
+                        url: `/image/thumbnails/${e.replace('.mp4', '')}.png`,
                         success: function (data) {
                             var x = template.replaceAll('{{ videoTitle }}', e).replaceAll('{{ videoLink }}', `/play/${e}`).replaceAll('{{ videoThumbnail }}', e);
                             $('#loadlist').append(x);
