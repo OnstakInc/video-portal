@@ -8,7 +8,7 @@ var upload = multer({ storage: storage })
 
 var config = require('../config');
 
-var url =  config.SS_URL || 'http://ciscoopenhouse.onstaklab.local/v1/AUTH_acme/devita/';
+var url =  config.SS_URL || 'http://swiftstackhx.onstaklab.local/v1/AUTH_akmeadmin/DigitalMarketing/';
 
 var myRequest = function ({ url, method, data = null }) {
 
@@ -16,7 +16,7 @@ var myRequest = function ({ url, method, data = null }) {
         url: url,
         method: method,
         headers: {
-            'x-auth-token':  config.SS_TOKEN || 'AUTH_tk32b61ca692054413a9d704ae4509886e'
+            'x-auth-token':  config.SS_TOKEN || 'AUTH_tk1f464c1cdc0146818fc7faac4f24f425'
         },
         body: data
     };
