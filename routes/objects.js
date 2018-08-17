@@ -16,7 +16,7 @@ var myRequest = function ({ url, method, data = null }) {
         url: url,
         method: method,
         headers: {
-            'x-auth-token':  config.SS_TOKEN || 'AUTH_tk1f464c1cdc0146818fc7faac4f24f425'
+            'x-auth-token':  config.SS_TOKEN || 'AUTH_tk23dc4cc4d5154f3bbc0b046a3ba35556'
         },
         body: data
     };
