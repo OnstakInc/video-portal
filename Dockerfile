@@ -16,6 +16,7 @@ RUN npm install
 COPY . .
 
 RUN chmod 666 /usr/src/app/token.txt
+RUN chown -R 1000:1000 /usr/src/app
 
 EXPOSE 8080
 
