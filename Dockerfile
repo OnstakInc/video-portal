@@ -3,6 +3,8 @@ FROM node:8
 # Create app directory
 WORKDIR /usr/src/app
 
+RUN chown -R 1000:1000 /usr/src/app
+
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
