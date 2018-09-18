@@ -32,7 +32,7 @@ var myRequest = function ({ url, method, data = null }) {
         getAuthToken(authUrl)
             .then(function (response) {
 
-                console.log('AUTH TOKEN: ' + response.headers['x-storage-token']);
+                console.log('AUTH TOKEN: ' + response.headers);
 
                 let options = {
                     url: url,
