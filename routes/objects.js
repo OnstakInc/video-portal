@@ -8,7 +8,7 @@ var upload = multer({ storage: storage })
 
 var config = require('../config');
 
-var authUrl = config.SS_AUTH || 'http://swiftstackhx.onstaklab.local/auth/v1';
+var authUrl = config.SS_AUTH || 'http://swiftstackhx.onstaklab.local/auth/v1.0';
 var url = config.SS_URL || 'http://swiftstackhx.onstaklab.local/v1/AUTH_akmeadmin/DigitalMarketing/';
 
 var getAuthToken = function (url) {
