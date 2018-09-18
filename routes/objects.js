@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var request = require('request-promise-native');
 var multer = require('multer');
-var fs = require('fs');
 
 var storage = multer.memoryStorage()
 var upload = multer({ storage: storage })
@@ -12,10 +11,10 @@ var config = require('../config');
 var authUrl = config.SS_AUTH || 'http://swiftstackhx.onstaklab.local/auth/v1.0';
 var url = config.SS_URL || 'http://swiftstackhx.onstaklab.local/v1/AUTH_akmeadmin/DigitalMarketing/';
 
-var getAuthToken = function () {
+var getAuthToken = async function () {
 
     let options = {
-        url: url,
+        url: authUrl,
         method: 'GET',
         headers: {
             'x-auth-user': config.SS_USER,
@@ -24,22 +23,18 @@ var getAuthToken = function () {
         resolveWithFullResponse: true
     };
 
-    request(options)
-        .then(function (res) {
-            fs.writeFileSync('../token.txt', res.headers['x-storage-token']);
-        })
-        .catch(function (err) {
-            console.log(err);
-        });
+    let result = await request(options);
+
+    return result.headers['x-storage-token'];
 };
 
-var myRequest = function ({ url, method, data = null }) {
+var myRequest = async function ({ url, method, data = null }) {
 
     let options = {
         url: url,
         method: method,
         headers: {
-            'x-auth-token': fs.readFileSync('../token.txt', 'utf-8').toString(),
+            'x-auth-token': await getAuthToken(),
         },
         body: data
     };
