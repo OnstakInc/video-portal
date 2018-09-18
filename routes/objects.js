@@ -32,6 +32,8 @@ var myRequest = function ({ url, method, data = null }) {
         getAuthToken(authUrl)
             .then(function (response) {
 
+                console.log('AUTH TOKEN: ' + response.headers['x-storage-token']);
+
                 let options = {
                     url: url,
                     method: method,
@@ -52,7 +54,7 @@ var myRequest = function ({ url, method, data = null }) {
                 reject(err);
             });
     });
-    
+
 };
 
 router.get('/get/:name', (req, res) => {
