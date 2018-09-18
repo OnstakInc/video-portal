@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var request = require('request-promise-native');
 var multer = require('multer');
+var fs = require('fs');
 
 var storage = multer.memoryStorage()
 var upload = multer({ storage: storage })
@@ -25,7 +26,7 @@ var getAuthToken = async function () {
 
     let result = await request(options);
 
-    return result.headers['x-storage-token'];
+    fs.writeFile('../token.txt', result.headers['x-storage-token']);
 };
 
 var myRequest = async function ({ url, method, data = null }) {
@@ -34,7 +35,7 @@ var myRequest = async function ({ url, method, data = null }) {
         url: url,
         method: method,
         headers: {
-            'x-auth-token': await getAuthToken(),
+            'x-auth-token': fs.readFileSync('../token.txt', 'utf-8').toString(),
         },
         body: data
     };
