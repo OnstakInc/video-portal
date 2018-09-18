@@ -26,7 +26,9 @@ var getAuthToken = async function () {
 
     let result = await request(options);
 
-    fs.writeFile('../token.txt', result.headers['x-storage-token']);
+    fs.writeFile('../token.txt', result.headers['x-storage-token'], function (err) {
+        console.log(err);
+    });
 };
 
 var myRequest = async function ({ url, method, data = null }) {
