@@ -28,27 +28,31 @@ var getAuthToken = function (url) {
 
 var myRequest = function ({ url, method, data = null }) {
 
-    getAuthToken(authUrl)
-        .then(function (response) {
+    return new Promise(function (resolve, reject) {
+        getAuthToken(authUrl)
+            .then(function (response) {
 
-            let options = {
-                url: url,
-                method: method,
-                headers: {
-                    'x-auth-token': response.headers['x-storage-token'],
-                },
-                body: data
-            };
+                let options = {
+                    url: url,
+                    method: method,
+                    headers: {
+                        'x-auth-token': response.headers['x-storage-token'],
+                    },
+                    body: data
+                };
 
-            return request(options);
+                resolve(request(options));
 
-            //let result = request(options);
+                //let result = request(options);
 
-            //return result;
-        })
-        .catch(function (err) {
-            console.log(err.message);
-        });
+                //return result;
+            })
+            .catch(function (err) {
+                console.log(err.message);
+                reject(err);
+            });
+    });
+    
 };
 
 router.get('/get/:name', (req, res) => {
