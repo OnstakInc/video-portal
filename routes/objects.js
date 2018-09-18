@@ -11,7 +11,7 @@ var config = require('../config');
 var authUrl = config.SS_AUTH || 'http://swiftstackhx.onstaklab.local/auth/v1';
 var url = config.SS_URL || 'http://swiftstackhx.onstaklab.local/v1/AUTH_akmeadmin/DigitalMarketing/';
 
-var getAuthToken = async function ({ url }) {
+var getAuthToken = function (url, callback) {
 
     let options = {
         url: url,
@@ -23,25 +23,30 @@ var getAuthToken = async function ({ url }) {
         resolveWithFullResponse: true
     };
 
-    let result = await request(options);
+    request(options, callback);
 
-    return result.headers["x-storage-token"];
+    // return result.headers["x-storage-token"];
 };
 
-var myRequest = async function ({ url, method, data = null }) {
+var myRequest = function ({ url, method, data = null }, callback) {
 
-    let options = {
-        url: url,
-        method: method,
-        headers: {
-            'x-auth-token': await getAuthToken({ url: authUrl }),
-        },
-        body: data
-    };
+    getAuthToken(authUrl, function (response) {
 
-    let result = request(options);
+        let options = {
+            url: url,
+            method: method,
+            headers: {
+                'x-auth-token': response.headers["x-storage-token"],
+            },
+            body: data
+        };
 
-    return result;
+        let result = request(options, callback);
+
+        return result;
+
+    });
+
 };
 
 router.get('/get/:name', (req, res) => {
