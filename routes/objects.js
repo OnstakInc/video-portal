@@ -12,7 +12,7 @@ var config = require('../config');
 var authUrl = config.SS_AUTH || 'http://swiftstackhx.onstaklab.local/auth/v1.0';
 var url = config.SS_URL || 'http://swiftstackhx.onstaklab.local/v1/AUTH_akmeadmin/DigitalMarketing/';
 
-var getAuthToken = async function () {
+var getAuthToken = function () {
 
     let options = {
         url: authUrl,
@@ -31,7 +31,7 @@ var getAuthToken = async function () {
     });
 };
 
-var myRequest = async function ({ url, method, data = null }) {
+var myRequest = function ({ url, method, data = null }) {
 
     let options = {
         url: url,
