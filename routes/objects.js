@@ -8,15 +8,33 @@ var upload = multer({ storage: storage })
 
 var config = require('../config');
 
-var url =  config.SS_URL || 'http://swiftstackhx.onstaklab.local/v1/AUTH_akmeadmin/DigitalMarketing/';
+var authUrl = config.SS_AUTH || 'http://swiftstackhx.onstaklab.local/auth/v1';
+var url = config.SS_URL || 'http://swiftstackhx.onstaklab.local/v1/AUTH_akmeadmin/DigitalMarketing/';
 
-var myRequest = function ({ url, method, data = null }) {
+var getAuthToken = async function ({ url }) {
+
+    let options = {
+        url: url,
+        method: 'GET',
+        headers: {
+            'x-auth-user': config.SS_USER,
+            'x-auth-key': config.SS_PASSWORD
+        },
+        resolveWithFullResponse: true
+    };
+
+    let result = await request(options);
+
+    return result.headers["x-storage-token"];
+};
+
+var myRequest = async function ({ url, method, data = null }) {
 
     let options = {
         url: url,
         method: method,
         headers: {
-            'x-auth-token':  config.SS_TOKEN || 'AUTH_tk0cde4911f1144fd380db8c75f41fb7a2'
+            'x-auth-token': await getAuthToken({ url: authUrl }),
         },
         body: data
     };
@@ -53,10 +71,10 @@ router.get('/get-all', (req, res) => {
         res.end();
 
     });
-    
+
 });
 
-router.post('/create', upload.single('obj') , (req, res) => {
+router.post('/create', upload.single('obj'), (req, res) => {
 
     let objName = req.body.name;
 
